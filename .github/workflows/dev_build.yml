@@ -7,17 +7,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 25 (for Minecraft Toolchain)
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'oracle'
-
-      - name: Set up JDK 21 (for Gradle Runner)
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -26,7 +20,9 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build
-        run: ./gradlew build -Porg.gradle.java.installations.auto-detect=true -Porg.gradle.java.installations.fromEnv=JAVA_HOME_25_X64
+        run: ./gradlew build --no-daemon -Dorg.gradle.jvmargs="-Dgroovy.antlr4=false"
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_25_X64 }}
 
       - name: Release
         uses: marvinpinto/action-automatic-releases@latest
