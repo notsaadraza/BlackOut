@@ -20,9 +20,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build
-        run: ./gradlew build --no-daemon -Dorg.gradle.jvmargs="-Dgroovy.antlr4=false"
-        env:
-          JAVA_HOME: ${{ env.JAVA_HOME_25_X64 }}
+        run: ./gradlew build
 
       - name: Release
         uses: marvinpinto/action-automatic-releases@latest
